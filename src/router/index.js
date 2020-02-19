@@ -1,14 +1,19 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Explorer from '../views/Explorer.vue';
+import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    name: 'home',
+    component: Home,
+  },
+  {
     path: '/@:username',
     name: 'explorer',
-    component: Explorer,
+    component: () => import(/* webpackChunkName: "explorer" */ '../views/Explorer.vue'),
   },
   {
     path: '/tx/:txid',

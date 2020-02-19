@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="./">SE Explorer</a>
+        <router-link class="navbar-brand" :to="{name: 'home'}">SE Explorer</router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -35,6 +35,13 @@
     </nav>
 
     <router-view :key="$route.fullPath" />
+
+    <footer class="footer">
+      <p>
+        made with ❤️ by
+        <a href="https://steemit.com/@reazuliqbal">@reazuliqbal</a>
+      </p>
+    </footer>
   </div>
 </template>
 

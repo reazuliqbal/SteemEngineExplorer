@@ -21,7 +21,7 @@ const call = async (endpoint, request) => {
 
     if (post.status === 200) result = post.data.result;
   } catch (e) {
-    console.log(e.message);
+    // console.log(e.message);
   }
 
   return result;
@@ -35,6 +35,14 @@ const getTransactionInfo = (txid) => {
     params: {
       txid,
     },
+  };
+
+  return callBlockchain(request);
+};
+
+const getLatestBlockInfo = () => {
+  const request = {
+    method: 'getLatestBlockInfo',
   };
 
   return callBlockchain(request);
@@ -54,5 +62,6 @@ const getBlockInfo = (blockNumber) => {
 export default {
   call,
   getBlockInfo,
+  getLatestBlockInfo,
   getTransactionInfo,
 };

@@ -39,10 +39,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-code {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-</style>

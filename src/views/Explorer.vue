@@ -61,7 +61,7 @@
 
             <template v-else-if="h.operation === 'market_close'">
               <a :href="`/@${h.account}`">@{{ h.account }}</a> market returned
-              <code>h.quantityUnlocked STEEMP</code>
+              <code>{{ h.quantityUnlocked }} STEEMP</code>
             </template>
 
             <template v-else-if="h.operation === 'market_cancel'">
@@ -70,11 +70,6 @@
               <code>{{ h.quantityReturned }} {{ h.symbol }}</code>.
               <code>ID: {{ h.orderID }}</code>
             </template>
-
-            <router-link
-              :to="{ name: 'transaction', params: { txid: h.transactionId } }"
-              class="small text-muted float-right"
-            >{{ h.transactionId.substr(0,8) }}</router-link>
 
             <router-link
               :to="{ name: 'block', params: { block: h.blockNumber } }"
@@ -86,6 +81,11 @@
               { includeSeconds: true, addSuffix: true }
               ) }}
             </router-link>
+
+            <router-link
+              :to="{ name: 'transaction', params: { txid: h.transactionId } }"
+              class="small text-muted float-right"
+            >{{ h.transactionId.substr(0,8) }}</router-link>
           </div>
         </div>
       </div>
@@ -164,10 +164,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-code {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-</style>
