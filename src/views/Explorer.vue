@@ -43,8 +43,7 @@
               <a :href="`/@${h.account}`">@{{ h.account }}</a> placed a
               <code>{{ h.orderType }} order</code> of
               <code>{{ Number(h.quantityLocked) / Number(h.price)}} {{ h.symbol }}</code> at
-              <code>{{ h.price }}STEEMP/{{ h.symbol }}</code>. Token locked
-              <code>{{ h.quantityLocked }} STEEMP</code>
+              <code>{{ h.price }}STEEMP/{{ h.symbol }}</code>
             </template>
 
             <template v-else-if="h.operation === 'market_buy'">
