@@ -69,6 +69,11 @@
               <code>ID: {{t.payload.id}}</code>
             </template>
 
+            <template v-if="t.action === 'withdraw'">
+              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> requested withdrawal of
+              <code>{{t.payload.quantity}} STEEMP</code>.
+            </template>
+
             <router-link
               :to="{ name: 'block', params: { block: blockNumber } }"
               class="small"
