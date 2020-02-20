@@ -8,71 +8,94 @@
       <div class="card mb-2" v-for="(t,i) in transactions" :key="i">
         <div class="card-body p-1">
           <div class="card-text">
-            <template v-if="t.action === 'transfer'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> transferred
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
-              <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
-              <code>{{ t.payload.memo }}</code>
+            <template v-if="t.contract === 'tokens'">
+              <template v-if="t.action === 'transfer'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> transferred
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
+                <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
+                <code>{{ t.payload.memo }}</code>
+              </template>
+
+              <template v-if="t.action === 'stake'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> staked
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
+                <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
+                <code>{{ t.payload.memo }}</code>
+              </template>
+
+              <template v-if="t.action === 'unstake'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> unstaked
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code>
+              </template>
+
+              <template v-if="t.action === 'cancelUnstake'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> cancelled unstaked.
+                <code>ID: {{t.payload.id}}</code>
+              </template>
+
+              <template v-if="t.action === 'delegate'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> delegated
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
+                <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
+              </template>
+
+              <template v-if="t.action === 'undelegate'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> undelegated
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> from
+                <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
+              </template>
+
+              <template v-if="t.action === 'issue'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> issued
+                <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
+                <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
+                <code>{{ t.payload.memo }}</code>
+              </template>
             </template>
 
-            <template v-if="t.action === 'stake'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> staked
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
-              <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
-              <code>{{ t.payload.memo }}</code>
+            <template v-if="t.contract === 'market'">
+              <template v-if="t.action === 'sell'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> wants to sell
+                <code>{{t.payload.quantity}} {{t.payload.symbol}}</code> at
+                <code>{{t.payload.price}} STEEMP/{{t.payload.symbol}}</code>
+              </template>
+
+              <template v-if="t.action === 'buy'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> wants to buy
+                <code>{{t.payload.quantity}} {{t.payload.symbol}}</code> at
+                <code>{{t.payload.price}} STEEMP/{{t.payload.symbol}}</code>
+              </template>
+
+              <template v-if="t.action === 'cancel'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> cancelled a
+                <code>{{t.payload.type}}</code> order.
+                <code>ID: {{t.payload.id}}</code>
+              </template>
             </template>
 
-            <template v-if="t.action === 'unstake'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> unstaked
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code>
+            <template v-if="t.contract === 'steempegged'">
+              <template v-if="t.action === 'withdraw'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> requested withdrawal of
+                <code>{{t.payload.quantity}} STEEMP</code>.
+              </template>
+              <template v-if="t.action === 'buy'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> wants to buy
+                <code>STEEMP</code> worth
+                <code>{{t.payload.amountSTEEMSBD}}</code>
+              </template>
+              <template v-if="t.action === 'removeWithdrawal'">
+                <a :href="`/@${t.sender}`">@{{ t.sender }}</a> removed withdrawal request.
+                <code>ID: {{t.payload.id}}</code>
+                Recipient:
+                <code>{{t.payload.recipient}}</code>
+                Amount:
+                <code>{{t.payload.amountSTEEMSBD}}</code>
+              </template>
             </template>
 
-            <template v-if="t.action === 'cancelUnstake'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> cancelled unstaked.
-              <code>ID: {{t.payload.id}}</code>
-            </template>
+            <template v-if="t.contract === 'nft'">NFT is not supported yet.</template>
 
-            <template v-if="t.action === 'delegate'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> delegated
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
-              <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
-            </template>
-
-            <template v-if="t.action === 'undelegate'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> undelegated
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> from
-              <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
-            </template>
-
-            <template v-if="t.action === 'issue'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> issued
-              <code>{{ t.payload.quantity }} {{ t.payload.symbol }}</code> to
-              <a :href="`/@${t.payload.to}`">@{{ t.payload.to }}</a>
-              <code>{{ t.payload.memo }}</code>
-            </template>
-
-            <template v-if="t.action === 'sell'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> wants to sell
-              <code>{{t.payload.quantity}} {{t.payload.symbol}}</code> at
-              <code>{{t.payload.price}} STEEMP/{{t.payload.symbol}}</code>
-            </template>
-
-            <template v-if="t.action === 'buy'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> wants to buy
-              <code>{{t.payload.quantity}} {{t.payload.symbol}}</code> at
-              <code>{{t.payload.price}} STEEMP/{{t.payload.symbol}}</code>
-            </template>
-
-            <template v-if="t.action === 'cancel'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> cancelled a
-              <code>{{t.payload.type}}</code> order.
-              <code>ID: {{t.payload.id}}</code>
-            </template>
-
-            <template v-if="t.action === 'withdraw'">
-              <a :href="`/@${t.sender}`">@{{ t.sender }}</a> requested withdrawal of
-              <code>{{t.payload.quantity}} STEEMP</code>.
-            </template>
+            <template v-if="t.contract === 'nftmarket'">NFT MARKET is not supported yet.</template>
 
             <router-link
               :to="{ name: 'block', params: { block: blockNumber } }"
