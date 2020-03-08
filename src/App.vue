@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
       <div class="container-fluid">
         <router-link class="navbar-brand" :to="{name: 'home'}">SE Explorer</router-link>
         <button

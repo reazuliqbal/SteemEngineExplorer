@@ -42,8 +42,12 @@
             <template v-else-if="h.operation === 'market_placeOrder'">
               <a :href="`/@${h.account}`">@{{ h.account }}</a> placed a
               <code>{{ h.orderType }} order</code> of
-              <code>{{ Number(h.quantityLocked) / Number(h.price)}} {{ h.symbol }}</code> at
-              <code>{{ h.price }}STEEMP/{{ h.symbol }}</code>
+              <code>
+                {{ h.orderType === 'buy' ?
+                Number(h.quantityLocked) / Number(h.price)
+                : Number(h.quantityLocked) }} {{ h.symbol }}
+              </code> at
+              <code>{{ h.price }} STEEMP/{{ h.symbol }}</code>
             </template>
 
             <template v-else-if="h.operation === 'market_buy'">
@@ -68,6 +72,10 @@
               cancelled a {{ h.orderType }} order of
               <code>{{ h.quantityReturned }} {{ h.symbol }}</code>.
               <code>ID: {{ h.orderID }}</code>
+            </template>
+
+            <template v-else-if="h.operation === 'market_expire'">
+              <code>{{ h.orderType.toUpperCase() }}</code> has expired
             </template>
 
             <router-link

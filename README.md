@@ -1,4 +1,4 @@
-# se-explorer
+# Steem Engine Explorer
 
 ## Project setup
 ```
