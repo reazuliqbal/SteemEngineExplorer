@@ -25,6 +25,11 @@
               <code>{{ h.quantity }} {{ h.symbol }}</code>
             </template>
 
+            <template v-else-if="h.operation === 'tokens_unstakeStart'">
+              <a :href="`/@${h.account}`">@{{ h.account }}</a> started unstaking
+              <code>{{ h.quantity }} {{ h.symbol }}</code>
+            </template>
+
             <template v-else-if="h.operation === 'tokens_delegate'">
               <a :href="`/@${h.from}`">@{{ h.from }}</a> delegated
               <code>{{ h.quantity }} {{ h.symbol }}</code> to
