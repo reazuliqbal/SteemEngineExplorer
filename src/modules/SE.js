@@ -28,6 +28,7 @@ const call = async (endpoint, request) => {
 };
 
 const callBlockchain = (request) => call('blockchain', request);
+const callContract = (request) => call('contracts', request);
 
 const getTransactionInfo = (txid) => {
   const request = {
@@ -59,9 +60,28 @@ const getBlockInfo = (blockNumber) => {
   return callBlockchain(request);
 };
 
+const getTokenHolders = async (symbol, offset = 0, limit = 1000) => {
+  const query = {};
+  if (symbol) query.symbol = symbol;
+
+  const request = {
+    method: 'find',
+    params: {
+      contract: 'tokens',
+      table: 'balances',
+      query,
+      offset,
+      limit,
+    },
+  };
+
+  return callContract(request);
+};
+
 export default {
   call,
   getBlockInfo,
   getLatestBlockInfo,
+  getTokenHolders,
   getTransactionInfo,
 };

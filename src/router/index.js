@@ -25,6 +25,11 @@ const routes = [
     name: 'block',
     component: () => import(/* webpackChunkName: "block" */ '../views/Block.vue'),
   },
+  {
+    path: '/richlist/:symbol?',
+    name: 'richlist',
+    component: () => import(/* webpackChunkName: "richlist" */ '../views/Richlist.vue'),
+  },
 ];
 
 const router = new VueRouter({

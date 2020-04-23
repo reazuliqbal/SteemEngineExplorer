@@ -1,38 +1,44 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <b-navbar toggleable="sm" type="dark" variant="dark">
       <div class="container-fluid">
-        <router-link class="navbar-brand" :to="{name: 'home'}">SE Explorer</router-link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <b-navbar-brand :to="{name: 'home'}">SE Explorer</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form class="form-inline my-2 my-lg-0" id="accountForm">
-            <input
+        <b-collapse id="nav-collapse" is-nav>
+          <b-nav-form>
+            <b-form-input
               v-model="account"
-              class="form-control mr-sm-2"
-              type="text"
+              class="mr-sm-2"
+              size="sm"
               placeholder="Account name"
               aria-label="Account"
-            />
-            <button
-              class="btn btn-outline-info my-2 my-sm-0"
+              @input="account=$event.toLowerCase()"
+              trim
+            ></b-form-input>
+            <b-form-input
+              v-model="symbol"
+              class="mr-sm-2"
+              size="sm"
+              placeholder="Token symbol"
+              aria-label="Token"
+              @input="symbol=$event.toUpperCase()"
+              trim
+            ></b-form-input>
+            <b-button
+              variant="outline-info"
+              size="sm"
               @click.prevent="getAccountHistory"
               :disabled="account.length < 3"
-            >Search</button>
-          </form>
-        </div>
+            >Search</b-button>
+          </b-nav-form>
+
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item :to="{name: 'richlist'}">Richlist</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
       </div>
-    </nav>
+    </b-navbar>
 
     <router-view :key="$route.fullPath" />
 
@@ -50,11 +56,22 @@ export default {
   data() {
     return {
       account: '',
+      symbol: '',
     };
+  },
+  created() {
+    this.account = this.$route.params.username || '';
+    this.symbol = this.$route.query.symbol || '';
   },
   methods: {
     getAccountHistory() {
-      this.$router.push({ name: 'explorer', params: { username: this.account } });
+      if (this.account !== this.$route.params.username
+      || this.symbol !== this.$route.query.symbol) {
+        const query = {};
+
+        if (this.symbol) query.symbol = this.symbol;
+        this.$router.push({ name: 'explorer', params: { username: this.account }, query });
+      }
     },
   },
 };

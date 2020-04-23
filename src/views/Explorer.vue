@@ -101,9 +101,11 @@
           </div>
         </div>
       </div>
+
+      <div v-if="history.length === 0">No history found.</div>
     </div>
 
-    <nav class="mt-3">
+    <nav class="mt-3" v-if="history.length >= limit">
       <ul class="pagination justify-content-center">
         <li class="page-item">
           <button
@@ -130,6 +132,7 @@ export default {
   data() {
     return {
       username: '',
+      token: '',
       page: 1,
       limit: 50,
       history: [],
@@ -140,6 +143,7 @@ export default {
   async created() {
     this.loader = this.$loading.show();
     this.username = this.$route.params.username;
+    this.symbol = this.$route.query.symbol || null;
     this.page = (this.$route.query.page && this.$route.query.page > 1) ? this.$route.query.page : 1;
 
     const offset = (this.page - 1) * this.limit;
@@ -152,7 +156,15 @@ export default {
     async fetchHistory(offset = this.offset) {
       this.dataLoaded = false;
 
-      const { data } = await axios.get(`https://history.steem-engine.com/accountHistory?account=${this.username}&limit=${this.limit}&offset=${offset}}`);
+      const params = {
+        account: this.username,
+        limit: this.limit,
+        offset,
+      };
+
+      if (this.symbol) params.symbol = this.symbol;
+
+      const { data } = await axios.get('https://api.steem-engine.com/history/accountHistory', { params });
 
       this.history = data;
 
@@ -161,12 +173,20 @@ export default {
 
     getNextPage() {
       this.page += 1;
-      this.$router.push({ name: 'explorer', params: { username: this.username }, query: { page: this.page } });
+
+      const query = { page: this.page };
+      if (this.symbol) query.symbol = this.symbol;
+
+      this.$router.push({ name: 'explorer', params: { username: this.username }, query });
     },
 
     getPrevPage() {
       this.page = (this.page > 1) ? this.page - 1 : 1;
-      this.$router.push({ name: 'explorer', params: { username: this.username }, query: { page: this.page } });
+
+      const query = { page: this.page };
+      if (this.symbol) query.symbol = this.symbol;
+
+      this.$router.push({ name: 'explorer', params: { username: this.username }, query });
     },
   },
   watch: {
