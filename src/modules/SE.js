@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const SE_RPC = 'https://api.steem-engine.com/rpc2';
+const SE_RPC = 'https://api.steem-engine.net/rpc2';
 
 const call = async (endpoint, request) => {
   const postData = {

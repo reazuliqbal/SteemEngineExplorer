@@ -164,7 +164,7 @@ export default {
 
       if (this.symbol) params.symbol = this.symbol;
 
-      const { data } = await axios.get('https://api.steem-engine.com/history/accountHistory', { params });
+      const { data } = await axios.get('https://api.steem-engine.net/history/accountHistory', { params });
 
       this.history = data;
 
